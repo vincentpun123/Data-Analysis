@@ -1,0 +1,513 @@
+---
+title: 'Pun_Vincent1'
+output:
+  html_document: default
+---
+
+```{r setup, include = FALSE}
+# DO NOT ADD OR REVISE CODE HERE
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+
+```
+
+-----
+
+### Test Items starts from here - There are 5 sections - 50 points total ##########################
+
+Read each question carefully and address each element.  Do not output contents of vectors or data frames unless requested.
+
+##### Section 1: (8 points) This problem deals with vector manipulations.
+
+(1)(a)  Create a vector that contains the following, in this order, and output the final, resulting vector.  Do not round any values, unless requested.
+* A sequence of integers from 0 to 4, inclusive.
+* The number 13
+* Three repetitions of the vector c(2, -5.1, -23).
+* The arithmetic sum of 7/42, 3 and 35/42
+
+```{r test1a}
+#seq, integer, rep, c 
+problem1a <-c(seq(from = 0, to = 4, by = 1),13,rep(c(2,-5.1,-23),3),((7/42)+3+(35/42)))
+
+
+```
+
+(1)(b)  Sort the vector created in (1)(a) in ascending order.  
+Output this result. 
+Determine the length of the resulting vector and assign to "L". 
+Output L. 
+Generate a descending sequence starting with L and ending with 1. 
+Add this descending sequence arithmetically the sorted vector. 
+This is vector addition, not vector combination. 
+
+Output the contents. 
+
+Do not round any values.
+
+```{r test1b}
+sort(problem1a, decreasing = FALSE) #Sort the vector created in 1a in ascending order
+#length output as "L" 
+L <- length(sort(problem1a, decreasing = FALSE))
+L #length of sorted problem1a
+sort(seq(from = L, to = 1), decreasing = TRUE) #descending from L to 1
+
+#add descending sequence arithmetically [to] the sorted vector
+problem1b_sortedvector <- sort(problem1a, decreasing = FALSE) #variables for organization
+problem1b_Lto1 <- sort(seq(from = L, to = 1), decreasing = TRUE) 
+#vector addition
+problem1b_vectoraddition <- problem1b_Lto1 + problem1b_sortedvector
+#output vector addition
+problem1b_vectoraddition
+
+
+
+```
+
+(1)(c) Extract the first and last elements of the vector you have created in (1)(b) 
+to form another vector of the extracted elements. 
+Form a third vector from the elements not extracted. 
+Output these vectors.
+
+```{r test1c}
+#extract first and last elements of vector
+problem1c_extract <- c(head(problem1b_vectoraddition, 1), #1 placement in vector
+               tail(problem1b_vectoraddition, 1)) #-1 placement in vector
+#not extracted
+problem1c_notextracted <- c(problem1b_vectoraddition[2:15])
+
+#output these vectors
+problem1c_extract
+problem1c_notextracted
+
+```
+
+(1)(d) Use the vectors from (c) to 
+reconstruct the vector in (b). 
+Output this vector. 
+Sum the elements and round to two decimal places.
+
+```{r test1d}
+#VECTOR FROM (c)
+#problem1c_extract
+#problem1c_notextracted
+
+#VECTOR IN (B)
+#problem1b_vectoraddition
+
+#RECONSTRUCT = put the two vectors from (c) back together so that it is the same length as the vector in (b)
+problem1d_reconstructedvector <- c(problem1c_extract,problem1c_notextracted)
+#output reconstructed vector
+problem1d_reconstructedvector 
+#round 2 decimal places c-style string formatting 
+#because round() to 2 places only shows the first decimal due to 0 for second decimal
+sprintf("%.2f", sum(problem1d_reconstructedvector))
+
+```
+
+-----
+
+##### Section 2: (10 points) The expression y = sin(x/2) + cos(x/2) is a trigonometric function.
+
+(2)(a) Create a user-defined function - via *function()* - 
+that implements the trigonometric function above, 
+accepts numeric values, "x," 
+calculates and returns values "y."
+
+```{r test2a}
+p2a_function <- function(x){
+  y <- sin(x/2) + cos(x/2) #trig function
+  result <- return(y)
+  result #returns y 
+}
+```
+
+(2)(b) Create a vector, x, of 4001 equally-spaced values from -2 to 2, inclusive. 
+Compute values for y using the vector x and your function from (2)(a).  
+**Do not output x or y.**  
+Find the value in the vector x that corresponds to the maximum value in the vector y. 
+Restrict attention to only the values of x and y you have computed; 
+i.e. do not interpolate. 
+Round to 3 decimal places and output both the maximum y and corresponding x value.
+
+Finding the two desired values can be accomplished in 
+as few as two lines of code.  
+
+Do not use packages or programs you may find on the internet or elsewhere. 
+Do not output the other elements of the vectors x and y. 
+Relevant coding methods are given in the *Quick Start Guide for R*.
+
+```{r test2b}
+?seq()
+x <- seq(from = -2, to = 2, length.out = 4001) #equally spaced between -2 and 2 4001 times 
+?c()
+
+#the two things I want to value match
+match1 <- round(max(p2a_function(x)),3)
+match2 <- round(x,3)
+
+#function to match values 
+p2b_intersection <- function(x, y) y[match(x, y, nomatch = 0)]
+p2b_intersection(match1,match2)
+```
+
+(2)(c) Plot y versus x in color, 
+with x on the horizontal axis. 
+Show the location of the maximum value of y determined in 2(b).  
+Show the values of x and y corresponding to the maximum value of y in the display. 
+Add a title and other features such as text annotations. 
+Text annotations may be added via *text()* for base R plots and 
+*geom_text()* or 
+*geom_label()* for ggplots.
+
+```{r test2c}
+
+plot(x,p2a_function(x), #x values for x axis, y values is sin(x/2) + cos(x/2)
+     type = "l",col = "lightgrey",xlab = "x",ylab = "y", 
+     main = "Max of sin(x/2)+cos(x/2) between -2 and 2")
+points(x = p2b_intersection(match1,match2), y = p2b_intersection(match1,match2), 
+       col = "red", pch =20)
+
+```
+
+-----
+
+##### Section 3: (8 points) This problem requires finding the point of intersection of two functions.  Using the function ```y = cos(x/2) * sin(x/2)```, 
+find where the curved line y = -(x/2)^3 intersects it within the range of values used in part (2) 
+(i.e. 4001 equally-spaced values from -2 to 2).  
+Plot both functions on the same display, 
+and show the point of intersection.  
+Present the coordinates of this point as text in the display.    
+
+```{r test3}
+#library(ggplot2) 
+#Wanted to use this but unsure how
+#ggplot(data, aes(x=x)) + geom_line(aes(y=p3_1(x))) NOTE/REFERENCE
+
+p3_1 <- function(x){
+  y <- cos(x/2) * sin(x/2)
+  result <- return(y)
+  result #returns y 
+}
+
+p3_2 <- function(x){
+  y <- -(x/2)^3 
+  result <- return(y)
+  result #returns y
+}
+
+coordx <- as.character(p3_1(x)[which(p3_1(x) == p3_2(x))])
+coordy <- as.character(p3_2(x)[which(p3_1(x) == p3_2(x))])
+
+
+plot(x, p3_1(x), type = "p", col = "lightgrey",
+     xlab = "(x/2)^3",ylab = "cos(x/2 *  sin(x/2)")
+lines(x, p3_2(x), type = "p", col = "orange")
+text(x = (p3_1(x)[which(p3_1(x) == p3_2(x))]), 
+     y = (p3_2(x)[which(p3_1(x) == p3_2(x))]),
+     labels = expression("0,0"),
+     col="black", 
+     pos = 3,
+     cex = 0.8)
+
+```
+
+```{r test3 REVISED}
+
+x <- seq(-2, 2, length = 4001) #sequence between -2 and 2 
+
+func1 <- cos(x/2) * sin(x/2) #function 1  
+
+func2 <- -(x/2)^3 #function 2 
+
+which(func1 == func2) #find where they equal eqch other 
+
+x[which(func1 == func2)] #within x, find where func1 equals func2 
+
+func1[which(func1 == func2)] #coordinate of func1 where func1 equals func2 
+
+func2[which(func1 == func2)] #coordinate of func2 where func1 equsl func2 
+
+plot(x, func1, main = "Plot of Functions", col = "red", #red func1 
+
+     xlab = " x values",
+
+     ylab = "y values",
+
+     type = "l", #lines 
+
+     xlim = c(-2.5, 2.5)) #since x is a sequuence between -2  and 2 
+
+points(func1[which(func1 == func2)], #points where intersect  
+
+       func2[which(func1 == func2)], #points where rintersect 
+
+       col = rgb(0,0, 1,0.9), #color
+
+       pch = 16,
+
+       cex = 3)
+
+?points()
+?lines()
+
+lines(x, func2, col = "green")
+
+text(func1[which(func1 == func2)] - 1.5,
+
+     func2[which(func1 == func2)] - 0.1,
+
+     "Intersection at Origin") #HOW SHE PUT TEXT ON TOP OF THE COORDINATES 
+
+abline(h = 0, lty = 3) #how she got the line to show at the cross section
+?abline()
+
+abline(v = 0, lty = 3)
+
+text(x = -1.5, y = -0.2, paste("x = ", #IMPORTANT HOW SHE PUT THE TEXT + COORDINATES 
+
+                               func1[which(func1 == func2)],
+
+                               "  y =  ",
+
+                               func2[which(func1 == func2)]))
+
+ 
+```
+
+
+-----
+
+##### Section 4: (12 points) Use the "trees" dataset for the following items. This dataset has three variables (Girth, Height, Volume) on 31 felled black cherry trees.
+
+(4)(a) Use *data(trees)* to load the dataset. 
+Check and output the structure with *str()*. 
+Use *apply()* to return the median values for the three variables. 
+Output these values.  
+Using R and logicals, output the row number and the three measurements - 
+Girth, Height and Volume - 
+of any trees with Girth equal to median Girth.  
+It is possible to accomplish this last request with one line of code.  
+
+```{r test3a}
+
+data(trees)
+#head(trees)
+#?median()
+apply(trees,2,median)
+
+trees[which(trees$Girth == median(trees$Girth)),]
+```
+
+(4)(b) Girth is defined as the diameter of a tree taken at 4 feet 6 inches from the ground. 
+Convert each diameter to a radius, r. 
+Calculate the cross-sectional area of each tree using pi times the squared radius. 
+Present a stem-and-leaf plot of the radii, 
+and a histogram of the radii in color. 
+Plot Area (y-axis) versus Radius (x-axis)  in color showing the individual data points.  
+Label appropriately.
+
+```{r test3b}
+#radius
+p4b_radius <- trees$Girth / 2
+#area
+p4b_area <- pi*p4b_radius**2
+#stem and leaf plot of the radii
+stem(p4b_radius)
+#mfcol
+par(mfcol = c(1,2))
+#histogram of radii in color
+?hist()
+hist(p4b_radius, breaks = 6, 
+     col = c("cadetblue1","cadetblue2","cadetblue3","cadetblue4","aquamarine","aquamarine1","aquamarine2"), 
+     main ="Radii in Color",
+     xlab = "Stems",
+     ylab = "Leaves")
+#plot area (y) versus radius (x) in color
+plot(p4b_radius,#x axis
+     p4b_area, #y axis
+     main = "Area versus Radius",
+     col = "steelblue1", #in color
+     xlab = "Radius", #label x
+     ylab = "Area", #label y 
+     type = "p", 
+     pch = 20)
+```
+
+(4)(c) Present a horizontal, 
+notched, 
+colored boxplot of the areas calculated in (b). 
+Title and label the axis.
+
+```{r test3c}
+?boxplot()
+boxplot(p4b_area,
+        horizontal =TRUE,
+        notch = TRUE,
+        col = c("cadetblue1", "black"),
+        main = "Trees - Area",
+        xlab = "Calculation - p4b_area", 
+        ylab = "Trees Dataframe - # of values")
+      
+```
+
+(4)(d) Demonstrate that the outlier revealed in the boxplot of Volume is not an extreme outlier.  
+It is possible to do this with one line of code using *boxplot.stats()* 
+or via 'manual' calculation and logicals. 
+
+Identify the tree with the largest Volume and  
+output on one line its row number and 
+three measurements.
+
+```{r test3d}
+
+boxplot.stats(p4b_area, 
+              coef = 3,
+              do.conf = TRUE,
+              do.out = TRUE)
+#the output "$out" yielding numeric(0) means that the outlier is not extreme, with coefficient equal to 3
+
+#leave columns blank to show all columns
+#row 31, girth 20.6, height 87, volume 77
+trees[which.max(p4b_area),] 
+
+
+```
+
+-----
+
+##### Section 5: (12 points) The exponential distribution is an example of a right-skewed distribution with outliers.  This problem involves comparing it with a normal distribution which typically has very few outliers.  
+
+5(a) Use *set.seed(124)* and 
+*rexp()* with 
+n = 100, 
+rate = 5.5 to 
+generate a random sample designated as y.  
+Generate a second random sample designated as x with 
+*set.seed(127)* and 
+*rnorm()* using 
+n = 100, 
+mean = 0 and 
+sd = 0.15.  
+
+Generate a new object using *cbind(x, y)*. 
+Do not output this object; instead, 
+assign it to a new name. 
+Pass this object to *apply()* and 
+compute the inter-quartile range (IQR) for each column:  x and y. 
+Use the function *IQR()* for this purpose. 
+Round the results to four decimal places and present (this exercise shows the similarity of the IQR values.).
+
+For information about *rexp()*, use 
+*help(rexp)* or 
+*?rexp()*.  
+**Do not output x or y.**
+
+```{r test5a}
+
+set.seed(124)
+y <- rexp(n = 100, rate = 5.5)
+
+set.seed(127)
+x <- rnorm(n = 100,  mean =  0, sd = 0.15)
+
+xy <- cbind(x, y)
+
+xy_IQR <- apply(xy, 2, IQR)
+
+xy_IQR_round4 <- round(xy_IQR,4)
+
+
+```
+
+(5)(b) This item will illustrate the difference between a right-skewed distribution and 
+a symmetric one.  
+For base R plots, use *par(mfrow = c(2, 2))* to generate a display with four diagrams; 
+*grid.arrange()* for ggplots. 
+On the first row, for the normal results, present a histogram and 
+a horizontal boxplot for x in color.  
+
+For the exponential results, present a histogram and 
+a horizontal boxplot for y in color.
+
+```{r test5b}
+
+#multi field row configuration 2x2 
+par(mfrow = c(2, 2))
+
+#normal results
+hist(x,
+     main = "Histogram - x",
+     xlab = "rnorm(n = 100,  mean =  0, sd = 0.15)",
+     ylab = "frequency",
+     breaks = 10,
+     col = "steelblue1",
+     freq = FALSE)
+
+boxplot(x,
+        main = "Boxplot - x",
+        horizontal = TRUE,
+        col = "steelblue1")
+
+#exponential results
+hist(y,
+     main = "Histogram - y",
+     xlab = "rexp(n = 100, rate = 5.5)",
+     ylab = "frequency",
+     breaks = 10,
+     col = "cadetblue1",
+     freq = FALSE)
+
+boxplot(y,
+        main = "Boxplot - y",
+        horizontal = TRUE,
+        col = "cadetblue1")
+
+```
+
+(5)(c) QQ plots are useful for detecting the presence of heavy-tailed distributions. 
+Present side-by-side QQ plots, 
+one for each sample, 
+using *qqnorm()* and *qqline()*.  
+Add color and titles. 
+In base R plots, "cex" can be used to control the size of the plotted data points and text. 
+Lastly, determine if there are any extreme outliers in either sample. 
+Remember:  extreme outliers are based on 3.0 x IQR in the box plot. 
+R uses a default value of 1.5 x IQR to define outliers (not extreme) in both boxplot and boxplot stats.
+
+```{r test5c}
+par(mfcol = c(1,2))
+#qqnorm x
+qqnorm(x, 
+       main = "QQ Norm - x",
+       col = "steelblue1", 
+       pch = 20)
+#qqline x
+qqline(x,
+       col = "red",
+       cex = 0.8)
+
+#qqnorm y 
+qqnorm(y, 
+       main = "QQ Norm - y",
+       col = "darkgreen",
+       ylim = c(0,2), 
+       pch = 20)
+#qqline y 
+qqline(y,
+       col = "red",
+       cex = 0.8)
+
+#no outliers in x
+boxplot.stats(x, coef = 3,
+              do.conf = TRUE,
+              do.out = TRUE)
+
+#outlier in y 
+
+boxplot.stats(y, coef = 3,
+              do.conf = TRUE,
+              do.out = TRUE)
+##$out
+##[1] 1.448679
+
+
+```
