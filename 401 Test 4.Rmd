@@ -1,0 +1,264 @@
+---
+title: "Module 8 - Test 4"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+
+Problem 1 
+
+The phrase "linear regression" pertains to regression models with normal equations that can be expressed in matrix form using linear algebra to determine coefficient estimates.
+
+```{r - Problem 1 }
+p1 <- c("True, linear regression equation with two variables is b + bx. True, In linear regression models we often use the least square approach by expressing the regression equation in matrix form to determine the coefficient estimates.")
+p1
+```
+
+(2) Choose the one alternative that best completes the statement or answers the question.
+
+Assume two independent random samples are available which provide sample proportions. 
+For the first sample assume n1= 100 and x1= 39. 
+For the second sample, assume n2= 100 and x2= 49. 
+
+Test the null hypothesis that the population proportions are equal versus the alternative hypothesis that the proportions are not equal at the 90% confidence level.  
+
+Frame the test statistic by subtracting the proportion for population 1 from that for population 2.
+
+Pick an appropriate z value, p-value and conclusion.  
+
+Round your answer to the nearest thousandth.
+
+z-value = -1.425  p-value= 0.077  statistically significant
+z-value = 1.425  p-value= 0.077  statistically significant
+z-value = -1.425  p-value= 0.077  not statistically significant
+z-value =  1.425  p-value= 0.077 not statistically significant
+```{r - Problem 2 - Module 7 - Ch 10.4 Statistical Inferences About Two Population Proportions (p1 - p2)}
+n1 <- 100
+x1 <- 39
+p1 <- x1/n1
+
+n2 <- 100
+x2 <- 49
+p2 <- x2/n2
+
+p <- (x1+x2)/(n1+n2)
+q <- 1-p
+
+#page 348 z formula to test difference in population proportions
+z <- ((p1-p2) - (0)) / (sqrt((p*q)*((1/n1)+(1/n2))))
+paste("z =",z,"p = ",pnorm(z))
+
+#Null H0 = P1 = P2 
+#Alternative = P1 not equal to p2 
+
+?pnorm
+pnorm(z)
+qnorm (0.05)
+
+#p value is < level of significance (0.10)
+
+#result is statisticaly significant
+
+#reject
+
+"statistically significant"
+
+#PROFESSOR RESPONSE
+"Question 2: Choose the one alternative that best completes the statement or answers the question.  Assume independent random samples are available from two populations. For the first sample assume n1= 100 and x1= 39. For the second sample, assume n2= 100 and x2= 49. Test the null hypothesis that the proportions are equal versus the alternative that they are not equal at the 90% confidence level. Pick the correct z value and p-value.
+
+Refer to Section 10.4 of Business Statistics.  Since the true population proportions are not known, a pooled estimate of the proportion is used to determine the z value.  This is a two-sided test.  The alpha level must be split in half.  0.05 is compared to the p-value. 
+
+Do not reject the Null Hypothesis.  Here is the calculation in R.
+
+> p <- (39 + 49)/200
+
+> std <- sqrt(p*(1-p)*(1/100 + 1/100))
+
+> z <- (0.49-0.39)/std
+
+> z
+
+[1] 1.424507
+
+> 1 - pnorm(z, 0, 1, lower.tail = T)
+
+[1] 0.07714985"
+
+```
+
+(3) Construct the indicated confidence interval for the difference between the two population means. Assume that the two samples are independent simple random samples selected from normally distributed populations.  Assume that the population standard deviations are equal.
+
+Two types of flares are tested and their burning times are recorded. The summary statistics are given below.
+
+Brand X  n = 35  mean = 19.4 minutes  standard deviation =1.4 minutes
+Brand Y  n = 40  mean = 15.1 minutes  standard deviation = 1.3 minutes
+
+Construct a 95% confidence interval for the differences between the mean burning time of the brand X flare and the mean burning time of the brand Y flare.
+
+Group of answer choices
+3.2 min < µX - µY < 5.4 min
+3.7 min < µX - µY < 4.9 min
+3.5 min < µX - µY < 5.1 min
+3.9 min < µX - µY < 4.7 min
+```{r}
+xn <- 35
+xmean <- 19.4
+xstd <- 1.4 
+yn <- 40
+ymean <- 15.1 
+ystd <- 1.3 
+
+cv <- qnorm(1-(0.05/2))
+
+z <- (xmean - ymean) / (sqrt( ((xstd**2)/xn) + ((ystd**2)/yn) ))
+z
+ (xmean - ymean) + (cv)*(sqrt( ((xstd**2)/xn) + ((ystd**2)/yn) ))
+ (xmean - ymean) - (cv)*(sqrt( ((xstd**2)/xn) + ((ystd**2)/yn) ))
+```
+
+(4) Construct a 95% confidence interval for the mean difference µd using a sample of paired data for which summary statistics are given. Assume the parent populations are normally distributed.  Assume the sample mean difference d = 3.0, the sample standard deviation sd = 2.114, and n = 15.
+```{r ch 10.3 confidence interaval formula to estimate the diff in related populations, D}
+"95% CI at df =n-1 = 8-1=7 has a t of 2.365 TWO TAILED
+
+95% CI is d +/- t*Sd/sqrt(n)
+
+= 3 +/- 2.365*2.911/sqrt(8)
+
+= 0.566 to 5.434
+
+So, answer to the option is A"
+
+marginoferror <- 2.145*(2.114/(sqrt(15)))
+marginoferror
+3+marginoferror
+3-marginoferror
+```
+
+One-way Analysis of Variance uses a F test to compare the variance between the treatment level means to the error variance (the pooled variance within levels).  
+For this test, one assumption is that the observations are random samples drawn from normally distributed populations with unequal variances. 
+```{r ch 11}
+"This statement is False because we assume that the population variances are equal."
+```
+ Use the given data to answer the question.
+
+What is the critical value for the F- test at 95% confidence?
+
+ 	DF	SS	MS	F	p
+Factor	3	13.500	4.500	5.17	0.011
+Error	16	13.925	0.870	 	 
+Total	19	27.425	 	 	 
+
+```{r module 8 ch 11.2 reading the f distribution table}
+"critical value is 3.239"
+```
+
+(7) Solve the problem.
+
+A manager at a bank is interested in comparing the standard deviation of the waiting times when a single waiting line is used versus when individual lines are used. 
+
+He wishes to test the claim that the population standard deviation for waiting times when multiple lines are used is greater than the population standard deviation for waiting times when a single line is used. 
+
+This is a test of differences in variability.  
+
+Find the p-value for a test of this claim given the following sample data. 
+
+If you use R, you will be able to calculate a precise p-value.  
+If you do a table lookup, you won't be able to find the exact p-value, but will be able to bound the p-value.   
+Retain at least 4 digits in the calculated p-value if you use R.  
+
+Sample 1: multiple waiting lines: n1 = 13, s1 = 2.0 minutes
+Sample 2: single waiting line: n2 = 16, s2 = 1.1 minutes
+```{r ch 11 but cant find in lecture}
+"here null hypothesis:Ho:\sigma1=\sigma2
+
+alternate hypothesis: Ha:\sigma1>\sigma2
+
+from above test statisitc F =(s1/s2)2 =(2/1.1)2 =3.3058
+
+for above test stat and(n1-1=12) df in numerator and (n2-1=15) df denominator p value =0.0158
+
+option C is correct
+
+c.) 0.01 <= p-value < 0.025"
+
+
+#PROFESSOR RESPONSE
+"Question 7: A manager is interested in the standard deviation of the waiting times when a single waiting line is used versus when individual lines are used. He wishes to test the claim that the population standard deviation for waiting times when multiple lines are used is greater than the population standard deviation for waiting times when a single line is used. Find the p-value for a test of this claim given the following sample data. You won't be able to find the exact p-value unless you use pf() in R.  Otherwise you will have to bound the p-value using Table A.7 Black. This is a test of differences in variability.  Retain at least 4 digits in the calculated p-value if you use R.
+
+Sample 1: multiple waiting lines: n1 = 13, s1 = 2.0 minutes
+Sample 2: single waiting line: n2 = 16, s2 = 1.1 minutes
+
+Section 10.5 of Business Statistics.  The ratio of variances equals 3.306 with 12 numerator degrees of freedom and 15  denominator degrees of freedom equal to 15.  The p-value for the F-test is 0.0158 using pf() in R.  The range from Table A.7 in Black is 0.01< p < 0.025. Here are the calculations in R.
+
+> F <- (2.0/1.1)^2
+
+> 1-pf(F,12,15,lower.tail = T)
+
+[1] 0.01581064"
+
+```
+
+
+(8) Provide an appropriate response.
+
+Fill in the missing entries in the following partially completed one-way ANOVA table.
+
+Source    	df	 SS	       MS-SS/df	    F-statistic
+Treatment	 	[5]    22.2	 	 [4.44]          [1.11]
+Error      	26	 	 [104]     4	 
+Total	      31	 	 	[126.2]
+```{r}
+#df total 31 = n-1 so n = 32 
+#df error = n - c = 26, n = 32, so c = 6
+#df c = c-1 so dfc = 5
+
+#mse = sse / (n-c) = 4 ... 
+sse <- 4*26
+sse
+#msc = ssc / (c-1)
+msc <- 22.2/(5)
+msc
+
+#f
+f <- msc/4
+f
+
+sst <- 22.2+sse #sst is ssc+sse
+sst
+```
+
+(9) Use the given data to find the equation of the regression line.  Round the final values to three significant digits, if necessary.  Let x be the independent variable and y the dependent variable.  (Note that if x = 2, then y = 7 and so forth.  yhat is the predicted value of the fitted equation.)
+
+x   2    5    8    10  12
+
+y   7  11  13   20  24
+```{r module 8- ch 12.3 determining the equation of the regression line}
+x <- c(2, 5, 8, 10, 12)
+
+y <- c(7, 11, 13, 20, 24)
+
+b1 <- sum((x - mean(x))*(y - mean(y))) / sum((x - mean(x))**2)
+
+b0 <- mean(y) - (b1 * mean(x))
+
+b1
+b0
+
+
+```
+
+(10) If a linear correlation coefficient (Pearson correlation) is -0.8443 for data suitable for simple linear regression, then the slope of the simple linear regression line must be negative and the r-squared value is 0.8443.
+```{r}
+"the r squared value would NOT be equal to the opposite of -0.8443"
+```
+
