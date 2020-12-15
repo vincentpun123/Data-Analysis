@@ -1,0 +1,264 @@
+---
+title: "475 Module 6 Test 3"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+_____________________________________________________________________
+
+(Problem 1) 
+Assume a random sample of size n is from a normal population. 
+Assume a single sample t test is used to for hypothesis testing.  
+The null hypothesis is that the population mean is zero versus the alternative hypothesis that it is not zero. (TWO TAILED) 
+
+If the sample size is decreased, and (results in smaller t)
+the Type I error rate is unchanged, (a stays the same)
+then the Type II error rate will increase.
+
+TRUE OR FALSE? (TRUE) 
+```{r Problem 1 (ch 9)}
+#9.6
+"increasing sample size decreaes value of the standard error and the critical value changes"
+"increasing sample size decreases B"
+#so DECREASE sample size will INCREASE type ii (b)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+(2) 
+Assume the population has a normal distribution and 
+the number of observations in a random sample is greater than fifty.   
+
+If a z test is used to test a null hypothesis about the population mean versus the 
+
+alternative that the true mean is greater than that specified by the null hypothesis, what is the critical value for a one-tailed test?  
+
+Assume the type one-error rate is 0.05.
+
+1.645
+
+```{r Problem 2   (ch 8)}
+"+2.052
+
++1.645
+
++2.576
+
++2.33"
+
+#ANSWER IS 1.645 
+
+```
+
+
+(3) Use the degree of confidence and sample data to construct a confidence interval for the population proportion p.
+
+n = 62, x = 32; 95% confidence  (Use the procedure in Business Statistics Section 8.3.)
+
+0.392 < p < 0.641 (ANSWER)
+
+0.408 < p < 0.669
+
+0.425 < p < 0.647
+
+0.426 < p < 0.646
+```{r Problem 3 (CH  8.3)}
+n <- 62
+a <- 0.95
+z <- 1.645
+za2 <- 1.96
+sampleproportion <- 32/62
+pq <- sampleproportion * (1-sampleproportion)
+
+paste("left side",sampleproportion - (za2*((pq/n)**0.5)))
+
+paste("right side",sampleproportion + (za2*((pq/n)**0.5)))
+
+```
+
+(4) Use the given data to find the sample size required to estimate the population proportion.
+Margin of error: 0.011; confidence level: 98%; p and q unknown
+
+11182
+
+7323
+
+8176
+
+11519
+
+
+```{r Problem 4 (Ch 8.5)}
+n <- (2.326**2)*(0.5)*(0.5)/(0.011**2) #the problem is fucked up. textbook says 2.33 but the answers uses nonrounded z score 
+n
+```
+
+Which of the following statements is not true?
+
+The sampling distribution of a statistic = the probability distribution for that statistic 
+based on all possible random samples from a population.
+
+A symmetric, heavy-tailed distribution cannot be detected using a boxplot and QQ chart.
+
+The t-statistic distribution is based upon the assumption of a random sample from a normal population.
+
+If the sample size is increased and the same test statistic and alpha level are used, 
+the power of the test will increase.
+```{r Problem 5 (Chegg)}
+"Box plot and QQ chart both can be used to find whether distribution is normally distributed or not.
+
+QQ chart are used to determine whether the data match with a normally distributed dataset.
+
+Correct option is b."
+```
+
+(6) Use the information to find the minimum sample size required to estimate an unknown population mean µ.  Margin of error: $110, confidence level: 95%, σ = $500.
+
+80
+
+37
+
+7
+
+6
+```{r Problem 6 (Ch. 8.5)}
+n <- (1.960*500/110)**2
+n #need to round up for sample sizes 
+```
+
+(7) Use the information provided to determine a 95%  confidence interval for the population variance. 
+
+A researcher was interested in the VARIABILITY in service time (in hours) (CHI TEST)
+spent by mechanics fixing the same automotive problem.  
+
+A random sample was taken resulting in a sample of size 20 from a substantial file of reported experience.  
+The summary statistics are as follows:  
+
+n = 20, 
+sample mean = 13.8 hours, 
+sample standard deviation = 3.9 hours.  
+
+Assume service time follows a normal distribution.  
+Round to two decimal places.
+
+(9.59, 28.56)
+
+(9.26, 34.15)
+
+(8.80, 32.45)
+
+(10.09, 30.07)
+
+https://www.chegg.com/homework-help/questions-and-answers/use-information-provided-determine-95-confidence-interval-population-variance-researcher-i-q29051417
+```{r Problem 7 (Ch 8.4)}
+"95% confidence interval is ( 8.80 , 32.45)"
+
+chisq <- 32.852
+chisq2 <- 8.907
+s2 <- 3.9**2
+
+left <- (19*s2)/32.852
+round(left,3)
+right <- (19*s2)/8.907
+round(right,2)
+
+```
+
+ Solve the problem.
+
+A 99% confidence interval (in inches) for the mean height of a population is 65.7 < µ < 67.3. 
+This result is based on a 
+sample of size 144. 
+Construct the 95% confidence interval. 
+(Hint: you will first need to find the sample mean and sample standard deviation).
+
+https://www.chegg.com/homework-help/questions-and-answers/99-confidence-interval-inches-mean-height-population-657-673-result-based-sample-size-144--q22196589
+```{r Problem 8 (Ch. 8.1)}
+"65.9 in < µ < 67.1 in."
+
+"Point estimate plus or minus margin of error = upper and lower bound"
+
+x <- (65.7+67.3)/2 #average (mew) (mean)
+
+E <- (67.3-65.7)/2 #margin of error. we need to make this equal to the formula 
+
+z99 <- 2.575
+
+n <- 144
+
+s <- 0.8*(n**0.5)/2.575 #solve for 0.80 (margin of error) equls the formula .. solve for sample sd sigma
+
+z95 <- 1.96 
+
+marginoferror95 <- 1.96 * s / (n**0.5)
+
+marginoferror95
+
+x + marginoferror95
+x - marginoferror95
+
+
+```
+
+Which of the following statements is NOT true for sampling distributions?
+
+Group of answer choices:
+
+A sampling distribution is necessary for making confidence statements about an unknown population parameter.
+
+A sampling distribution depends on the nature of the population being sampled.
+
+When sampling at random from a normal population, the sampling distribution for the sample average is a normal distribution.
+
+None of the above.
+```{r Problem 9}
+"ANSWER IS NONE OF THE ABOVE" 
+```
+
+ Assume normality and use the information given to find the p-value. 
+ Based on the p-value estimated, determine if the null hypothesis should be rejected at a 
+ 0.1 significance level.  (a/2... so 0.05?)
+ 
+ Select the correct answer if the test statistic in a two-tailed test is z= -1.63.  
+ Note: Remember that it is a 2-sided test.
+ 
+ p-value = 0.9484; fail to reject the null hypothesis (answer)
+
+p-value = 0.0516; reject the null hypothesis
+
+p-value = 0.1031; fail to reject the null hypothesis
+
+p-value = 0.0258; reject the null hypothesis
+```{r Problem 10 (Ch. 9.2)}
+#z = -1.63...so z table ... 0.0516
+"p-value = 0.1031; fail to reject the null hypothesis"
+".0515 * 2 = .1031"
+"some  staticians double p value for t wo sided test intead and compare to a"
+"so bsically what i shouldve noticed was that option b is correct p value but need to not reject"
+"so then next case is to see that 2p is fialed to reject"
+
+"You'll only need t o double the p-value if the significance level given is for one tail and you want to do two tailed tests. The reason is that p-value is by definition the probability of getting a statistic greater than the one reported. As a result, p-value is a one-tailed statistic."
+
+
+"PROFESSOR SRINIVASAN RESPONSE: 
+
+10)  (3 pts) Assume normality and use the information given to find the p-value.  
+Based on the p-value estimated, determine if the null hypothesis should be rejected at a 
+
+0.1 significance level.  
+
+Select the correct answer if the test statistic in a two-tailed test is z= -1.63.  
+Note: Remember that it is a 2-sided test.
+
+Using the normal distribution table in Business Statistics the p-value is 0.1032 = 2*0.0516, where 0.0516 equals the tail area left of -1.63.  Refer to Section 9.2 Business Statistics.  Compare this tail area to 0.1 significance level.  
+
+Since the computed table value 0.1032 > 0.1, don’t reject the Null Hypothesis. "
+
+```
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
